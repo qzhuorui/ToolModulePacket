@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="wx_pic"
+        app:layout_constraintEnd_toStartOf="@+id/btn_audio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="wx_audio"
+        app:layout_constraintEnd_toStartOf="@+id/btn_video"
+        app:layout_constraintStart_toEndOf="@+id/btn_pic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="wx_video"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_audio"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/btn_normal_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="normal_clean"
+        app:layout_constraintEnd_toStartOf="@+id/btn_medium_clean"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pic" />
+
+    <Button
+        android:id="@+id/btn_medium_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="medium_clean"
+        app:layout_constraintEnd_toStartOf="@+id/btn_severe_clean"
+        app:layout_constraintStart_toEndOf="@+id/btn_normal_clean"
+        app:layout_constraintTop_toBottomOf="@+id/btn_audio" />
+
+    <Button
+        android:id="@+id/btn_severe_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="severe_clean"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_medium_clean"
+        app:layout_constraintTop_toBottomOf="@+id/btn_video" />
+
+    <Button
+        android:id="@+id/btn_phone_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="phone_video"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_normal_clean" />
+
+    <Button
+        android:id="@+id/btn_select_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="select_all"
+        app:layout_constraintStart_toEndOf="@+id/btn_phone_video"
+        app:layout_constraintTop_toBottomOf="@+id/btn_medium_clean" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_phone_video" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
