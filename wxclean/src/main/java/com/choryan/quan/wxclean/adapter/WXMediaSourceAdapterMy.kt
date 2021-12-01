@@ -17,23 +17,23 @@ import com.choryan.quan.wxclean.R
  * @date: 2021/11/29
  * @description:
  */
-class WXMediaSourceAdapter : RecyclerView.Adapter<WXMediaSourceAdapter.ViewHolder>() {
+class WXMediaSourceAdapterMy : MyBaseAdapter<WXMediaSourceAdapterMy.ViewHolder>() {
 
     private var dataSource: ArrayList<FileBean> = ArrayList()
     private var context: Context? = null
 
     var click: ((FileBean, Int) -> Unit)? = null
 
-    fun setDataSource(context: Context, data: List<FileBean>) {
+    override fun setDataSource(context: Context, data: List<FileBean>) {
         this.context = context
         dataSource.addAll(data)
     }
 
-    fun getDataSource(): ArrayList<FileBean> {
+    override fun getDataSource(): ArrayList<FileBean> {
         return dataSource
     }
 
-    fun cleanDataSource() {
+    override fun cleanDataSource() {
         dataSource.clear()
     }
 

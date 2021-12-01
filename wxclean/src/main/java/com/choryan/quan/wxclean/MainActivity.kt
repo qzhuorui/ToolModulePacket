@@ -1,18 +1,16 @@
 package com.choryan.quan.wxclean
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.Formatter
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.choryan.quan.wxclean.adapter.FileBean
-import com.choryan.quan.wxclean.adapter.ImgDecoration
-import com.choryan.quan.wxclean.adapter.WXFileSourceAdapter
-import com.choryan.quan.wxclean.adapter.WXMediaSourceAdapter
+import com.choryan.quan.wxclean.adapter.*
 import com.choryan.quan.wxclean.filemanager.FileTypeScanManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
@@ -37,20 +35,20 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
     }
 
     private val mediaAdapter by lazy {
-        val imgAdapter = WXMediaSourceAdapter()
+        val imgAdapter = WXMediaSourceAdapterMy()
         imgAdapter.click = this
         imgAdapter
     }
 
     private val fileAdapter by lazy {
-        val imgAdapter = WXFileSourceAdapter()
+        val imgAdapter = WXFileSourceAdapterMy()
         imgAdapter.click = this
         imgAdapter
     }
 
     private val dataSource = ArrayList<FileBean>()
-    private var selectAll = false
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -115,23 +113,24 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
         }
         btn_select_all.setOnClickListener {
             lifecycleScope.launch(Dispatchers.Main) {
-                val curAdapter = rv.adapter
-                selectAll = !selectAll
-                withContext(Dispatchers.IO) {
-                    when (curAdapter) {
-                        is WXFileSourceAdapter -> {
-                            curAdapter.getDataSource().map { it.select = selectAll }
-                        }
-                        is WXMediaSourceAdapter -> {
-                            curAdapter.getDataSource().map { it.select = selectAll }
-                        }
-                        else -> {
-                            Log.d("test", "select_All: adapter error")
-                        }
-                    }
+                val curAdapter = rv.adapter as MyBaseAdapter
+                val curSelectStatus = withContext(Dispatchers.IO) {
+                    curAdapter.getDataSource().all { it.select }
                 }
-                curAdapter?.notifyDataSetChanged()
+                changeSelectUI(!curSelectStatus)
+                withContext(Dispatchers.IO) {
+                    curAdapter.getDataSource().map { it.select = !curSelectStatus }
+                }
+                curAdapter.notifyDataSetChanged()
             }
+        }
+    }
+
+    private fun changeSelectUI(all: Boolean) {
+        if (all) {
+            btn_select_all.setBackgroundColor(Color.GREEN)
+        } else {
+            btn_select_all.setBackgroundColor(Color.BLUE)
         }
     }
 
@@ -140,6 +139,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
         rv.isNestedScrollingEnabled = true
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun packingMediaAdapter() {
         lifecycleScope.launch(Dispatchers.Main) {
             rv.layoutManager = GridLayoutManager(this@MainActivity, 3)
@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun packingFileAdapter() {
         lifecycleScope.launch(Dispatchers.Main) {
             rv.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -161,12 +162,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
     }
 
     override fun invoke(p1: FileBean, pos: Int) {
-        Toast.makeText(this, "delete file", Toast.LENGTH_SHORT).show()
-        p1.select = !p1.select
-        rv.adapter?.notifyItemChanged(pos)
+        lifecycleScope.launch(Dispatchers.Main) {
+            p1.select = !p1.select
+            val adapter = rv.adapter as MyBaseAdapter
+            adapter.notifyItemChanged(pos)
+            val curSelectStatus = withContext(Dispatchers.IO) {
+                adapter.getDataSource().all { it.select }
+            }
+            changeSelectUI(curSelectStatus)
 
-//        FileTypeScanManager.deleteTest(this, p1)
-//        mediaAdapter.notifyDataSetChanged()
+            //FileTypeScanManager.deleteTest(this, p1)
+        }
     }
 
 }
