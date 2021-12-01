@@ -2,7 +2,10 @@ package com.choryan.quan.wxclean
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.format.Formatter
 import android.widget.Toast
@@ -20,6 +23,16 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) -> Unit {
+
+    private val animation by lazy {
+        val animation = AnimationDrawable()
+        animation.isOneShot = false
+        for (i in 0..45) {
+            val bitmap = BitmapFactory.decodeStream(assets.open("animation_500_kwlffqm500$i.jpg"))
+            animation.addFrame(BitmapDrawable(resources, bitmap), 50)
+        }
+        animation
+    }
 
     private val taskId by lazy {
         UUID.randomUUID().toString()
@@ -124,6 +137,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
                 curAdapter.notifyDataSetChanged()
             }
         }
+        //iv_frame_animation.setImageDrawable(animation)
+        //animation.start()
     }
 
     private fun changeSelectUI(all: Boolean) {
