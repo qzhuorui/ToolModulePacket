@@ -255,7 +255,7 @@ object WeChatCleanHelper {
      */
     fun cleanNormalCache(context: Context, file: File) {
         val normalLevel = Normal_Type.map { it.string }.contains(file.name)
-        val tmpTag = file.name.contains("tmp", true)
+        val tmpTag = file.name.contains("tmp", true) || file.name.contains("temp", true)
         if (normalLevel || tmpTag) {
             FileTypeScanManager.deleteTest(context, file)
             Log.d("test", "cleanNormalCache: ${file.absolutePath}")
@@ -282,6 +282,10 @@ object WeChatCleanHelper {
 
     fun isWXImgCache(fileName: String): Boolean {
         return fileName.contains(".png", true) || fileName.contains(".jpg", true)
+    }
+
+    fun isWXEmojiCache(fileName: String): Boolean {
+        return fileName.endsWith("_cover")
     }
 
     fun isWXAudioCache(fileName: String): Boolean {
