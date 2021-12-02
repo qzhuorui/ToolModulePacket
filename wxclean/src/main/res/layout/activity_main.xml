@@ -75,20 +75,28 @@
         app:layout_constraintStart_toEndOf="@+id/btn_phone_video"
         app:layout_constraintTop_toBottomOf="@+id/btn_medium_clean" />
 
+    <Button
+        android:id="@+id/btn_get_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="get Select"
+        app:layout_constraintStart_toEndOf="@+id/btn_select_all"
+        app:layout_constraintTop_toBottomOf="@+id/btn_medium_clean" />
+
     <ImageView
         android:id="@+id/iv_frame_animation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_select_all"/>
+        app:layout_constraintTop_toBottomOf="@+id/btn_select_all" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_phone_video" />
 

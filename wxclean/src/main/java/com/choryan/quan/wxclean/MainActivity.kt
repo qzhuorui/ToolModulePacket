@@ -137,6 +137,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), (FileBean, Int) 
                 curAdapter.notifyDataSetChanged()
             }
         }
+        btn_get_select.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.Main) {
+                val curAdapter = rv.adapter as MyBaseAdapter
+                val selectDataSource = withContext(Dispatchers.IO) {
+                    curAdapter.getDataSource().filter { it.select }
+                }
+            }
+        }
         //iv_frame_animation.setImageDrawable(animation)
         //animation.start()
     }
